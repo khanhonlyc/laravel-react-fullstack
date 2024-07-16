@@ -1,15 +1,27 @@
 import { useState } from "react";
 import "../App.css";
+import HeaderMainComponent from "../components/Header-main-Component";
+import { userStateContext } from "../contexts/ContextProvider";
+import SurveyListItem from "../components/SurveyListItem";
 
 function Surveys() {
+  const { surveys } = userStateContext();
+  console.log(33, surveys);
+  const OnDeleteClick = () => {
+    console.log("delete");
+  };
   return (
-    <header className="bg-white shadow">
-      <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-          Surveys
-        </h1>
-      </div>
-    </header>
+    <HeaderMainComponent title={"Surveys"}>
+      {/* Surveys */}
+      {surveys.map((survey) => (
+        // <div key={survey.id}>{survey.title}</div>
+        <SurveyListItem
+          key={survey.id}
+          survey={survey}
+          OnDeleteClick={OnDeleteClick}
+        />
+      ))}
+    </HeaderMainComponent>
   );
 }
 
