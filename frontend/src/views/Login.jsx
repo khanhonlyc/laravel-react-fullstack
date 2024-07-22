@@ -2,13 +2,14 @@ import { useState } from "react";
 import "../App.css";
 import  {userStateContext}  from "../contexts/ContextProvider";
 import axiosClient from "../axios";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 function Login() {
   const { setCurrentUser, setUserToken } = userStateContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ __html: "" });
+  const navigate = useNavigate();
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -20,9 +21,9 @@ function Login() {
         password,
       })
       .then(({ data }) => {
-        console.log(data)
         setCurrentUser(data.user);
         setUserToken(data.token);
+        navigate('/');
       })
       .catch((error) => {
         console.log(error);

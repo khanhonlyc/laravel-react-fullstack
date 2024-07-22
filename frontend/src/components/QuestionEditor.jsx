@@ -1,5 +1,6 @@
 import { PlusIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { userStateContext } from "../contexts/ContextProvider";
 
 const QuestionEditor = ({
@@ -17,18 +18,40 @@ const QuestionEditor = ({
       ...model,
       type: ev.target.value,
     };
-    // if (!shouldHaveOptions(model.type) && shouldHaveOptions(ev.target.value)) {
-    //   if (!model.data.options) {
-    //     newModel.data = {
-    //       options: [{ uuid: uuidv4(), text: "" }],
-    //     };
-    //   }
-    // }
+    if (!shouldHaveOptions(model.type) && shouldHaveOptions(ev.target.value)) {
+      if (!model.data.options) {
+        newModel.data = {
+          options: [{ uuid: uuidv4(), text: "" }],
+        };
+      }
+    }
     setModel(newModel);
+    console.log(123, model);
+  }
+  // console.log("model", model);
+
+  function addOption() {
+    model.data.options.push({
+      uuid: uuidv4(),
+      text: "",
+    });
+    setModel({ ...model });
+  }
+
+  function deleteOption(op) {
+    model.data.options = model.data.options.filter(
+      (option) => option.uuid != op.uuid
+    );
+    setModel({ ...model });
   }
   
   function upperCaseFirst(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  function shouldHaveOptions(type = null){
+    type = type|| model.type;
+    return ["select", "radio", "checkbox"].includes(type);
   }
 
   useEffect(() => {
@@ -124,7 +147,7 @@ const QuestionEditor = ({
         </div>
         {/* Options */}
         <div>
-          {/* {shouldHaveOptions() && (
+          {shouldHaveOptions() && (
             <div>
               <h4 className="text-sm font-semibold mb-1 flex justify-between items-center">
                 Options
@@ -136,12 +159,12 @@ const QuestionEditor = ({
                   Add
                 </button>
               </h4>
-              {model.data.options.length === 0 && (
+              {model.data.options?.length === 0 && (
                 <div className="text-xs text-gray-600 text-center py-3">
                   You don't have any options defined
                 </div>
               )}
-              {model.data.options.length > 0 && (
+              {model.data.options?.length > 0 && (
                 <div>
                   {model.data.options.map((op, ind) => (
                     <div key={op.uuid} className="flex items-center mb-1">
@@ -167,7 +190,7 @@ const QuestionEditor = ({
                 </div>
               )}
             </div>
-          )} */}
+          )}
         </div>
       </div>
       <hr />

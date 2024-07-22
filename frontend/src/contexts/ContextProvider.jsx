@@ -15,23 +15,16 @@ const StateContext = createContext({
 });
 
 export const ContextProvider = ({ children }) => {
-  // {
-  //   name: "Tom Cook",
-  //   email: "tom@example.com",
-  //   imageUrl:
-  //     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  // }
   const [currentUser, setCurrentUser] = useState();
-  // if (localStorage.getItem("TOKEN")) {
-  //   useEffect(() => {
-  //     axiosClient.post("/getauth").then((res) => {
-  //       setCurrentUser(res.data.user);
-  //     });
-  //   }, []);
-  // }
-  const [userToken, _setUserToken] = useState(
-    localStorage.getItem("TOKEN") || ""
-  );
+  const [userToken, _setUserToken] = useState(localStorage.getItem("TOKEN") || "");
+
+  useEffect(() => {
+    if (userToken) {
+      axiosClient.get("/getuser").then(({ data }) => {
+        setCurrentUser(data.user);
+      });
+    }
+  }, [userToken]);
 
   const tmpSurveys = [
     {
@@ -56,7 +49,13 @@ export const ContextProvider = ({ children }) => {
   ];
   const [surveys, setSurveys] = useState(tmpSurveys);
   const [toast, setToast] = useState({ message: "", show: false });
-  const [questionTypes] = useState(['text', "select", "radio", "checkbox", "textarea"])
+  const [questionTypes] = useState([
+    "text",
+    "select",
+    "radio",
+    "checkbox",
+    "textarea",
+  ]);
 
   const showToast = (message) => {
     setToast({ message, show: true });
@@ -84,7 +83,7 @@ export const ContextProvider = ({ children }) => {
         toast,
         setToast,
         showToast,
-        questionTypes
+        questionTypes,
       }}
     >
       {children}

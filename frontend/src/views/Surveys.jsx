@@ -22,7 +22,7 @@ function Surveys() {
   const getSurveys = (url) => {
     url = url || "/survey";
     axiosClient.get(url).then(({ data }) => {
-      console.log(43, data);
+      // console.log(43, data);
       setMege(data);
       setSurveys(data.data);
     });

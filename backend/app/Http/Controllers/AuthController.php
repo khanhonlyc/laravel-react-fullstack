@@ -15,7 +15,7 @@ class AuthController extends Controller
     //
     public function index()
     {
-        // return 6666;
+        // 
     }
     public function signup(SignupRequest $request)
     {
@@ -55,14 +55,16 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $use = Auth::user();
-        Log::info($use);
         //Revoke the token that was used to authenticate the current request
         $use->currentAccessToken()->delete();
         return response(['success' => true]);
     }
-    public function getauth(Request $request)
+    public function getuser(Request $request)
     {
+        // return response(['user' =>  $request->user()]);
+        // return $request->user();
+        Log::info("............Login");
         $use = Auth::user();
-        return response(['user' => $use]);
+        return response(['user' =>  $use]);
     }
 }

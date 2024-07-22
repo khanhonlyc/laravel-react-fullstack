@@ -36,10 +36,8 @@ function classNames(...classes) {
 }
 
 export default function DefaultLayout() {
-  const { currentUser, userToken, setCurrentUser, setUserToken } =
-    userStateContext();
+  const { currentUser, userToken, setCurrentUser, setUserToken } = userStateContext();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
   const Log_out = (ev) => {
     ev.preventDefault();
     axiosClient.post("/logout").then((res) => {
@@ -48,23 +46,18 @@ export default function DefaultLayout() {
       navigate("/guest/login");
     });
   };
-  useEffect(() => {
-    if (localStorage.getItem("TOKEN")) {
-      axiosClient
-        .post("/getauth")
-        .then((res) => {
-          console.log(333, res.data.user);
-          setCurrentUser(res.data.user);
-        })
-        // .finally(() => {
-        //   setIsLoading(false); // Kết thúc quá trình tải
-        // });
-    }
-  }, []);
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-  if (!currentUser) return <div>404 no found</div>;
+  // useEffect(() => {
+  //   if (localStorage.getItem("TOKEN")) {
+  //     axiosClient.get("/getuser").then(({ data }) => {
+  //       console.log(333, data.user);
+  //       setCurrentUser(data.user);
+  //     });
+  //   }
+  // }, []);
+  if (!userToken) {
+    return <Navigate to="/guest/login" />;
+  }
+  if (!currentUser) return;
   return (
     <>
       <div className="min-h-full">
@@ -161,7 +154,6 @@ export default function DefaultLayout() {
               </div>
             </div>
           </div>
-
           <DisclosurePanel className="md:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
               {navigation.map((item) => (
