@@ -5,7 +5,7 @@ import axiosClient from "../axios";
 import { Link } from "react-router-dom";
 
 function Login() {
-  // const { setCurrentUser, setUserToken } = useStateContext();
+  const { setCurrentUser, setUserToken } = userStateContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ __html: "" });
@@ -21,19 +21,20 @@ function Login() {
       })
       .then(({ data }) => {
         console.log(data)
-        // setCurrentUser(data.user);
-        // setUserToken(data.token);
+        setCurrentUser(data.user);
+        setUserToken(data.token);
       })
       .catch((error) => {
         console.log(error);
-        // if (error.response) {
-        //   const finalErrors = Object.values(error.response.data.errors).reduce(
-        //     (accum, next) => [...accum, ...next],
-        //     []
-        //   );
-        //   setError({ __html: finalErrors.join("<br>") });
-        // }
-        // console.error(error);
+        console.log(error.response);
+        if (error.response) {
+          const finalErrors = Object.values(error.response.data.errors).flat();
+          // .reduce(
+          //   (accum, next) => [...accum, ...next],
+          //   []
+          // );
+          setError({ __html: finalErrors.join("<br>") });
+        }
       });
   };
 

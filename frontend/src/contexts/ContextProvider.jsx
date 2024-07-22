@@ -1,19 +1,38 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import axiosClient from "../axios";
 
 const StateContext = createContext({
   currentUser: {},
   userToken: null,
+  surveys: [],
+  questionTypes: [],
   setCurrentUser: () => {},
   setUserToken: () => {},
+  toast: {
+    message: null,
+    show: false,
+  },
 });
 
 export const ContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState({
-    name: "Tom Cook",
-    email: "tom@example.com",
-    imageUrl:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-  });
+  // {
+  //   name: "Tom Cook",
+  //   email: "tom@example.com",
+  //   imageUrl:
+  //     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+  // }
+  const [currentUser, setCurrentUser] = useState();
+  // if (localStorage.getItem("TOKEN")) {
+  //   useEffect(() => {
+  //     axiosClient.post("/getauth").then((res) => {
+  //       setCurrentUser(res.data.user);
+  //     });
+  //   }, []);
+  // }
+  const [userToken, _setUserToken] = useState(
+    localStorage.getItem("TOKEN") || ""
+  );
+
   const tmpSurveys = [
     {
       userId: 1,
@@ -35,8 +54,16 @@ export const ContextProvider = ({ children }) => {
       body: "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut",
     },
   ];
-  const [userToken, _setUserToken] = useState(localStorage.getItem("TOKEN") || "");
   const [surveys, setSurveys] = useState(tmpSurveys);
+  const [toast, setToast] = useState({ message: "", show: false });
+  const [questionTypes] = useState(['text', "select", "radio", "checkbox", "textarea"])
+
+  const showToast = (message) => {
+    setToast({ message, show: true });
+    setTimeout(() => {
+      setToast({ message: "", show: false });
+    }, 5000);
+  };
 
   const setUserToken = (token) => {
     if (token) {
@@ -54,6 +81,10 @@ export const ContextProvider = ({ children }) => {
         userToken,
         setUserToken,
         surveys,
+        toast,
+        setToast,
+        showToast,
+        questionTypes
       }}
     >
       {children}

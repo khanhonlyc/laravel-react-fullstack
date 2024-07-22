@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
-class SurveyUpdateRequest extends FormRequest
+use Log;
+class StoreSurveyRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,11 +13,14 @@ class SurveyUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $survey = $this->route('survey');
-        if ($this->user()->id !== $survey->user_id) {
-            return false;
-        }
         return true;
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'user_id' => $this->user()->id
+        ]);
     }
 
     /**
@@ -34,7 +37,7 @@ class SurveyUpdateRequest extends FormRequest
             'status' => 'required|boolean',
             'description' => 'nullable|string',
             'expire_date' => 'nullable|date|after:today',
-            'questions' => 'array'
+            'questions' => 'array',
         ];
     }
 }
