@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::get('/index', [AuthController::class, 'index']);
-Route::get('/survey/get-by-slug/{survey:slug}', [SurveyController::class, 'getBySlug']);
+Route::get('/survey/get-by-slug/{survey:id}', [SurveyController::class, 'getBySlug']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/signup', [AuthController::class, 'signup']);
 
