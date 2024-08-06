@@ -28,13 +28,15 @@ function Login() {
       .catch((error) => {
         console.log(error);
         console.log(error.response);
+        // let error = error?.response?.data?.error;
         if (error.response) {
-          const finalErrors = Object.values(error.response.data.errors).flat();
+          const finalErrors = error?.response?.data?.error;
           // .reduce(
           //   (accum, next) => [...accum, ...next],
           //   []
           // );
-          setError({ __html: finalErrors.join("<br>") });
+          // console.log(33, error?.response?.data?.errors)
+          setError({ __html: finalErrors});
         }
       });
   };

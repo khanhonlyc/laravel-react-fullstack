@@ -5,7 +5,7 @@ import HeaderMainComponent from "../components/Header-main-Component";
 function Dashboard() {
   return (
     <HeaderMainComponent title={"Dashboard"}>
-      abc
+      Dashboard_Main
     </HeaderMainComponent>
   );
 }
