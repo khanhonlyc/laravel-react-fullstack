@@ -26,8 +26,8 @@ import axiosClient from "../axios";
 import { useEffect, useState } from "react";
 
 const navigation = [
-  { name: "Dashboard", to: "/", current: true },
-  { name: "Surveys", to: "/surveys", current: false },
+  { name: "Surveys", to: "/", current: false },
+  { name: "Dashboard", to: "/dashboard", current: true },
 ];
 const userNavigation = [{ name: "Sign out", href: "#" }];
 

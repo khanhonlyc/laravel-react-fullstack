@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PageComponent from "../components/PageComponent";
 import TButton from "../components/core/TButton";
 import { LinkIcon, PhotoIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import axiosClient from "../axios";
 import { userStateContext } from "../contexts/ContextProvider";
@@ -13,6 +13,7 @@ const SurveyView = () => {
   const [error, setError] = useState("");
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [survey, setSurvey] = useState({
     // user_id: currentUser.id,
     title: "",
@@ -41,12 +42,13 @@ const SurveyView = () => {
     res
       .then((res) => {
         console.log(res);
-        // Navigate("/surveys");
         if (id) {
           showToast("The survey was updated");
         } else {
           showToast("The survey was created");
         }
+        // Navigate("/surveys");
+        navigate("/");
       })
       .catch((err) => {
         if (err && err.response) {

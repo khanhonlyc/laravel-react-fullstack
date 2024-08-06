@@ -7,6 +7,7 @@ import GuestLayout from "./components/GuestLayout";
 import DefaultLayout from "./components/DefaultLayout";
 import SurveyView from "./views/SurveyView";
 import SurveyPulicView from "./views/SurveyPulicView";
+import UiDashboard from "./components/UI-collection/UiDashboard";
 
 const router = createBrowserRouter([
   {
@@ -15,11 +16,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Dashboard />,
+        element: <Surveys />,
       },
       {
-        path: "/surveys",
-        element: <Surveys />,
+        path: "/dashboard",
+        element: <Dashboard />,
       },
       {
         path: "/surveys/create",
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
   {
     path: "/survey/get-by-slug/:slug",
     element: <SurveyPulicView />,
+  },
+  {
+    path: "/test",
+    element: <UiDashboard />,
   },
 ]);
 export default router;
